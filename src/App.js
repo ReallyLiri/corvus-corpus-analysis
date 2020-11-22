@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import BatAnimation from "./assets/img/idea-bat-animation.gif"
 import Start from "./assets/img/idea-start.png"
 import CleanBackground from "./assets/img/idea-bg.png"
@@ -16,7 +16,7 @@ const StyledImage = styled.img`
 position: absolute;
   max-height: 100%;
   max-width: 100%;
-  z-index: ${props => props.z};
+  z-index: ${props => props.z || 0};
 `;
 
 const BatPointer = styled.div`
@@ -57,7 +57,7 @@ const App = () => {
 
     return <React.Fragment>
         <div onClick={() => !started && start()} className={started ? "hidden" : "visible"}>
-            <StyledImage src={Start} alt="start"/>
+            <StyledImage src={Start} alt="start" z={3}/>
         </div>
         <StyledImage z={1} src={CleanBackground} alt="background" className={backgroundLoaded ? "visible" : "hidden"}/>
         {
