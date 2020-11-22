@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react"
+import React, {useState} from "react"
 import BatAnimation from "./assets/img/idea-bat-animation.gif"
 import Start from "./assets/img/idea-start.png"
 import CleanBackground from "./assets/img/idea-bg.png"
