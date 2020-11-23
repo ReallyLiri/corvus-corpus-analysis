@@ -7,10 +7,11 @@ import TitleMoodboard from "./assets/img/idea-title-2.png"
 import TitleMarket from "./assets/img/idea-title-3.png"
 import PageBrief from "./assets/img/idea-web-1.png"
 import PageMoodboard from "./assets/img/idea-web-2.png"
+import PageMarket from "./assets/img/idea-web-3.png"
 import styled from "styled-components";
 
 const Height = window.innerHeight;
-const HeightRatio = Height / 1080.0;
+const SizeRatio = Height / 1080.0;
 
 const StyledImage = styled.img`
 position: absolute;
@@ -21,25 +22,25 @@ position: absolute;
 
 const BatPointer = styled.div`
   position: absolute;
-  top: ${props => HeightRatio * 350 + HeightRatio * 80 * props.pageIndex}px;
+  top: ${props => SizeRatio * 350 + SizeRatio * 80 * props.pageIndex}px;
   z-index: 3;
 `;
 
 const BatImage = styled.img`
   margin-left: 15px;
-  width: 100px;
+  width: ${SizeRatio * 100}px;
 `;
 
 const PageTitle = styled.div`
   position: absolute;
-  top: ${props => HeightRatio * 320 + HeightRatio * 80 * props.pageIndex}px;
+  top: ${props => SizeRatio * 320 + SizeRatio * 80 * props.pageIndex}px;
   cursor: pointer;
   z-index: 3;
 `;
 
 const PageTitleImage = styled.img`
-  margin-left: 125px;
-  height: 100px;
+  margin-left: ${SizeRatio * 125}px;
+  height: ${SizeRatio * 85}px;
 `;
 
 const App = () => {
@@ -52,7 +53,7 @@ const App = () => {
     const start = () => {
         setStarted(true);
         setTimeout(() => setBackgroundLoaded(true), 3000);
-        setTimeout(() => setContentLoaded(true), 6000);
+        setTimeout(() => setContentLoaded(true), 4500);
     };
 
     return <React.Fragment>
@@ -60,33 +61,31 @@ const App = () => {
             <StyledImage src={Start} alt="start" z={3}/>
         </div>
         <StyledImage z={1} src={CleanBackground} alt="background" className={backgroundLoaded ? "visible" : "hidden"}/>
-        {
-            contentLoaded && <BatPointer pageIndex={pageIndex}>
+        <div className={contentLoaded ? "visible" : "hidden"}>
+            <BatPointer pageIndex={pageIndex}>
                 <BatImage src={BatAnimation} alt="bat"/>
             </BatPointer>
-        }
-        {
-            contentLoaded && <React.Fragment>
-                <PageTitle pageIndex={0} onClick={() => setPageIndex(0)}>
-                    <PageTitleImage src={TitleBrief} alt="brief"/>
-                </PageTitle>
-                <PageTitle pageIndex={1} onClick={() => setPageIndex(1)}>
-                    <PageTitleImage src={TitleMoodboard} alt="moodboard"/>
-                </PageTitle>
-                <PageTitle pageIndex={2} onClick={() => setPageIndex(2)}>
-                    <PageTitleImage src={TitleMarket} alt="market-research"/>
-                </PageTitle>
-            </React.Fragment>
-        }
-        {
-            contentLoaded &&
-            pageIndex === 0 && <StyledImage z={2} src={PageBrief} alt="background"/>
-        }
-        {
-            contentLoaded &&
-            pageIndex === 1 && <StyledImage z={2} src={PageMoodboard} alt="background"/>
-        }
-    </React.Fragment>;
+            <PageTitle pageIndex={0} onClick={() => setPageIndex(0)}>
+                <PageTitleImage src={TitleBrief} alt="brief"/>
+            </PageTitle>
+            <PageTitle pageIndex={1} onClick={() => setPageIndex(1)}>
+                <PageTitleImage src={TitleMoodboard} alt="moodboard"/>
+            </PageTitle>
+            <PageTitle pageIndex={2} onClick={() => setPageIndex(2)}>
+                <PageTitleImage src={TitleMarket} alt="market-research"/>
+            </PageTitle>
+            {
+                pageIndex === 0 && <StyledImage z={2} src={PageBrief} alt="brief"/>
+            }
+            {
+                pageIndex === 1 && <StyledImage z={2} src={PageMoodboard} alt="mooboard"/>
+            }
+            {
+                pageIndex === 2 && <StyledImage z={2} src={PageMarket} alt="market"/>
+            }
+        </div>
+    </React.Fragment>
+        ;
 };
 
 export default App;
