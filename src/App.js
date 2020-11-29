@@ -10,20 +10,24 @@ import TitleContent from "./assets/img/idea-title-5.png"
 import PageBrief from "./assets/img/idea-web-1.png"
 import PageMoodboard from "./assets/img/idea-web-2.png"
 import PageMarket from "./assets/img/idea-web-3.png"
+import PageRecipe from "./assets/img/idea-web-4.png"
+import PageContent from "./assets/img/idea-web-5.png"
 import BackgroundAnimation from "./assets/img/idea-bg-animation.gif"
 import styled from "styled-components";
 
 const Height = window.innerHeight;
 const SizeRatio = Height / 1080.0;
 
-const StyledImage = styled.img`
+const BaseImage = ({className, ...props}) => <img alt="alt" className={className} {...props} ondragstart="return false;" draggable="false"/>;
+
+const StyledImage = styled(BaseImage)`
 position: absolute;
   max-height: 100%;
   max-width: 100%;
   z-index: ${props => props.z || 0};
 `;
 
-const CrowImage = styled.img`
+const CrowImage = styled(BaseImage)`
   position: absolute;
   top: 60%;
   left: 40%;
@@ -37,7 +41,7 @@ const BatPointer = styled.div`
   z-index: 3;
 `;
 
-const BatImage = styled.img`
+const BatImage = styled(BaseImage)`
   margin-left: 15px;
   width: ${SizeRatio * 100}px;
 `;
@@ -49,69 +53,98 @@ const PageTitle = styled.div`
   z-index: 3;
 `;
 
-const PageTitleImage = styled.img`
+const PageTitleImage = styled(BaseImage)`
   margin-left: ${SizeRatio * 125}px;
   height: ${SizeRatio * 85}px;
 `;
+
+const loadImage = path =>
+    new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => resolve(path);
+        img.src = path;
+    });
+
+const Images = [
+    Start,
+    TitleBrief,
+    TitleMoodboard,
+    TitleMarket,
+    TitleRecipe,
+    TitleContent,
+    PageBrief,
+    PageMoodboard,
+    PageMarket,
+    PageRecipe,
+    PageContent,
+    BackgroundAnimation
+];
+
+Promise.all(Images.map(loadImage))
+    .then(
+        () => console.log("Prefetching images done"),
+        err => console.error(err)
+    );
 
 const App = () => {
 
     const [started, setStarted] = useState(false);
     const [backgroundLoaded, setBackgroundLoaded] = useState(false);
-    const [contentLoaded, setContentLoaded] = useState(false);
+    const [pagesLoaded, setPagesLoaded] = useState(false);
     const [pageIndex, setPageIndex] = useState(0);
 
     const start = () => {
         setStarted(true);
         setTimeout(() => setBackgroundLoaded(true), 3000);
-        setTimeout(() => setContentLoaded(true), 6000);
+        setTimeout(() => setPagesLoaded(true), 7000);
     };
+
+    const visibleOnPagesLoadedClassName = pagesLoaded ? "visible" : "hidden";
 
     return <React.Fragment>
         <div onClick={() => !started && start()} className={started ? "hidden" : "visible"}>
-            <StyledImage src={Start} alt="start" z={3} draggable="false" ondragstart="return false;"/>
-            <CrowImage src={CrowAnimation} alt="crow"/>
+            <StyledImage src={Start} z={3}/>
+            <CrowImage src={CrowAnimation}/>
         </div>
         {
-            backgroundLoaded && <StyledImage z={1} src={BackgroundAnimation} alt="background" draggable="false" ondragstart="return false;"/>
+            backgroundLoaded && <StyledImage z={1} src={BackgroundAnimation}/>
         }
         <div>
-            <BatPointer pageIndex={pageIndex} className={contentLoaded ? "visible" : "hidden"}>
-                <BatImage src={BatAnimation} alt="bat" draggable="false" ondragstart="return false;"/>
+            <BatPointer pageIndex={pageIndex} className={visibleOnPagesLoadedClassName}>
+                <BatImage src={BatAnimation}/>
             </BatPointer>
-            <PageTitle pageIndex={0} onClick={() => setPageIndex(0)} className={contentLoaded ? "visible" : "hidden"}>
-                <PageTitleImage src={TitleBrief} alt="brief" draggable="false" ondragstart="return false;"/>
+            <PageTitle pageIndex={0} onClick={() => setPageIndex(0)} className={visibleOnPagesLoadedClassName}>
+                <PageTitleImage src={TitleBrief}/>
             </PageTitle>
-            <PageTitle pageIndex={1} onClick={() => setPageIndex(1)} className={contentLoaded ? "visible" : "hidden"}>
-                <PageTitleImage src={TitleMoodboard} alt="moodboard" draggable="false" ondragstart="return false;"/>
+            <PageTitle pageIndex={1} onClick={() => setPageIndex(1)} className={visibleOnPagesLoadedClassName}>
+                <PageTitleImage src={TitleMoodboard}/>
             </PageTitle>
-            <PageTitle pageIndex={2} onClick={() => setPageIndex(2)} className={contentLoaded ? "visible" : "hidden"}>
-                <PageTitleImage src={TitleMarket} alt="market-research" draggable="false" ondragstart="return false;"/>
+            <PageTitle pageIndex={2} onClick={() => setPageIndex(2)} className={visibleOnPagesLoadedClassName}>
+                <PageTitleImage src={TitleMarket}/>
             </PageTitle>
-            <PageTitle pageIndex={3} onClick={() => setPageIndex(3)} className={contentLoaded ? "visible" : "hidden"}>
-                <PageTitleImage src={TitleRecipe} alt="recipe" draggable="false" ondragstart="return false;"/>
+            <PageTitle pageIndex={3} onClick={() => setPageIndex(3)} className={visibleOnPagesLoadedClassName}>
+                <PageTitleImage src={TitleRecipe}/>
             </PageTitle>
-            <PageTitle pageIndex={4} onClick={() => setPageIndex(4)} className={contentLoaded ? "visible" : "hidden"}>
-                <PageTitleImage src={TitleContent} alt="content" draggable="false" ondragstart="return false;"/>
+            <PageTitle pageIndex={4} onClick={() => setPageIndex(4)} className={visibleOnPagesLoadedClassName}>
+                <PageTitleImage src={TitleContent}/>
             </PageTitle>
-                {
-                    pageIndex === 0 && <StyledImage z={2} src={PageBrief} alt="brief" draggable="false" ondragstart="return false;" className={contentLoaded ? "visible" : "hidden"}/>
-                }
-                {
-                    pageIndex === 1 && <StyledImage z={2} src={PageMoodboard} alt="mooboard" draggable="false" ondragstart="return false;"/>
-                }
-                {
-                    pageIndex === 2 && <StyledImage z={2} src={PageMarket} alt="market" draggable="false" ondragstart="return false;"/>
-                }
-                {
-                    pageIndex === 3 && <StyledImage z={2} src={PageBrief} alt="market" draggable="false" ondragstart="return false;"/>
-                }
-                {
-                    pageIndex === 4 && <StyledImage z={2} src={PageBrief} alt="market" draggable="false" ondragstart="return false;"/>
-                }
+            {
+                pageIndex === 0 && <StyledImage z={2} src={PageBrief} className={visibleOnPagesLoadedClassName}/>
+            }
+            {
+                pageIndex === 1 && <StyledImage z={2} src={PageMoodboard}/>
+            }
+            {
+                pageIndex === 2 && <StyledImage z={2} src={PageMarket}/>
+            }
+            {
+                pageIndex === 3 && <StyledImage z={2} src={PageRecipe}/>
+            }
+            {
+                pageIndex === 4 && <StyledImage z={2} src={PageContent}/>
+            }
         </div>
     </React.Fragment>
-        ;
 };
 
 export default App;
